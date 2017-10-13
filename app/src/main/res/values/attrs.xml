@@ -1,0 +1,11 @@
+<?xml version="1.0" encoding="utf-8"?>
+<resources>
+
+    <declare-styleable name="JFabulousView">
+        <attr name="unFabulousIcon" format="reference" />
+        <attr name="fabulousedIcon" format="reference" />
+        <attr name="fabulousTextColor" format="color" />
+        <attr name="fabulousTextSize" format="dimension" />
+        <attr name="showTextAnimation" format="boolean" />
+    </declare-styleable>
+</resources>

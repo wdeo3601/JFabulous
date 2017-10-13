@@ -7,6 +7,7 @@ import android.view.View
 import android.widget.ImageView
 import android.widget.LinearLayout
 import android.widget.TextView
+import android.widget.Toast
 
 /**
  * Created by wendong on 2017/10/13 0013.
@@ -37,13 +38,19 @@ class JFabulousView : LinearLayout, View.OnClickListener {
 
         //创建 点赞数量的textview
         tvFabulousCount = TextView(context)
+
+        //设置水平布局
+        orientation = HORIZONTAL
+
+        
+
     }
 
     /**
      * 初始化数据
      */
     private fun initData(attrs: AttributeSet?) {
-        TODO("not implemented") //To change body of created functions use File | Settings | File Templates.
+
     }
 
     override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
@@ -59,6 +66,6 @@ class JFabulousView : LinearLayout, View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-
+        Toast.makeText(context,"click",Toast.LENGTH_LONG).show()
     }
 }
