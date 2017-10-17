@@ -7,12 +7,15 @@
     tools:context="com.wdeo3601.jfabulous.MainActivity">
 
     <com.wdeo3601.jfabulous.widget.JFabulousView
-        android:layout_width="100dp"
-        android:layout_height="100dp"
+        android:layout_width="wrap_content"
+        android:layout_height="wrap_content"
         android:orientation="horizontal"
         app:layout_constraintBottom_toBottomOf="parent"
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
-        app:layout_constraintTop_toTopOf="parent" />
+        app:layout_constraintTop_toTopOf="parent"
+        app:fabulousTextColor="@android:color/holo_red_dark"
+        app:currentFabulousNumber="100"
+        app:fabulousTextSize="18sp"/>
 
 </android.support.constraint.ConstraintLayout>

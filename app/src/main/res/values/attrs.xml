@@ -2,10 +2,19 @@
 <resources>
 
     <declare-styleable name="JFabulousView">
-        <attr name="unFabulousIcon" format="reference" />
-        <attr name="fabulousedIcon" format="reference" />
+        <!--点赞图标的颜色-->
+        <attr name="fabulousIconColor" format="color" />
+        <!--点赞数量的文字颜色-->
         <attr name="fabulousTextColor" format="color" />
+        <!--点赞数量的文字大小-->
         <attr name="fabulousTextSize" format="dimension" />
+        <!--是否显示图标动画-->
+        <attr name="showIconAnimation" format="boolean" />
+        <!--是否显示文字变换的动画-->
         <attr name="showTextAnimation" format="boolean" />
+        <!--设置当前的点赞数量-->
+        <attr name="currentFabulousNumber" format="integer" />
+        <!--是否已经点过赞了-->
+        <attr name="hasFabulous" format="boolean" />
     </declare-styleable>
 </resources>
