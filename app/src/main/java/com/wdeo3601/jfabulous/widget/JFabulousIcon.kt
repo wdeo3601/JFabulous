@@ -9,10 +9,10 @@ import android.widget.RelativeLayout
  * Email:       wdeo3601@163.com
  * Description:点赞图标的自定义view
  */
-class JFabulousIcon:RelativeLayout {
-    constructor(context: Context?) : this(context,null)
-    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs,0)
-    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr){
+class JFabulousIcon : RelativeLayout {
+    constructor(context: Context?) : this(context, null)
+    constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
+    constructor(context: Context?, attrs: AttributeSet?, defStyleAttr: Int) : super(context, attrs, defStyleAttr) {
         init()
     }
 

@@ -71,11 +71,11 @@ class JFabulousView : LinearLayout, View.OnClickListener {
 
 
         normalTextView.setTextColor(mFabulousTextColor)
-        normalTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mFabulousTextSize)
+        normalTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mFabulousTextSize)
         jFabulousTextWitcher.initData(mFabulousTextColor, mFabulousTextSize)
 
-        val divideIndex = divideTextIndex(mCurrentFabulousCount)
-        normalTextView.text = mCurrentFabulousCount.toString().substring(0, divideIndex)
+        divideTextIndex(mCurrentFabulousCount)
+
 
         addView(normalTextView)
         addView(jFabulousTextWitcher)
@@ -84,7 +84,7 @@ class JFabulousView : LinearLayout, View.OnClickListener {
     /**
      * 划分文本为需要变换的和不需要变换的
      */
-    private fun divideTextIndex(number: Int): Int {
+    private fun divideTextIndex(number: Int) {
         //计算将要变成的下一个数
         val nextNumber: Int = if (mHasFabulous) {
             number - 1
@@ -96,8 +96,8 @@ class JFabulousView : LinearLayout, View.OnClickListener {
         val currentNumberStr = number.toString()
         val nextNumberStr = nextNumber.toString()
 
-        val unSelectedText: String
-        val selectedText: String
+        var unSelectedText: String
+        var selectedText: String
         if (currentNumberStr.length != nextNumberStr.length) {
             if (mHasFabulous) {
                 selectedText = currentNumberStr
@@ -106,12 +106,11 @@ class JFabulousView : LinearLayout, View.OnClickListener {
                 selectedText = nextNumberStr
                 unSelectedText = currentNumberStr
             }
+            normalTextView.text = ""
             jFabulousTextWitcher.setSelectAndText(mHasFabulous, selectedText, unSelectedText)
-            return 0
         } else {
             for (i in 0 until currentNumberStr.length) {
                 if (currentNumberStr[i] != nextNumberStr[i]) {
-
                     if (mHasFabulous) {
                         selectedText = currentNumberStr.substring(i)
                         unSelectedText = nextNumberStr.substring(i)
@@ -119,11 +118,11 @@ class JFabulousView : LinearLayout, View.OnClickListener {
                         selectedText = nextNumberStr.substring(i)
                         unSelectedText = currentNumberStr.substring(i)
                     }
+                    normalTextView.text = mCurrentFabulousCount.toString().substring(0, i)
                     jFabulousTextWitcher.setSelectAndText(mHasFabulous, selectedText, unSelectedText)
-                    return i
+                    return
                 }
             }
-            return 0
         }
     }
 
@@ -134,4 +133,16 @@ class JFabulousView : LinearLayout, View.OnClickListener {
     override fun onClick(v: View?) {
         jFabulousTextWitcher.setSelect()
     }
+
+    fun setCurrentFabulousCount(fabulousCount: Int) {
+        this.mCurrentFabulousCount = fabulousCount
+        divideTextIndex(mCurrentFabulousCount)
+        invalidate()
+    }
+    fun setSelect(isselect:Boolean){
+        this.mHasFabulous = isselect
+        divideTextIndex(mCurrentFabulousCount)
+        invalidate()
+    }
+
 }
