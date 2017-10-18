@@ -14,8 +14,7 @@
         app:layout_constraintLeft_toLeftOf="parent"
         app:layout_constraintRight_toRightOf="parent"
         app:layout_constraintTop_toTopOf="parent"
-        app:fabulousTextColor="@android:color/holo_red_dark"
-        app:currentFabulousNumber="100"
+        app:currentFabulousNumber="119"
         app:fabulousTextSize="18sp"/>
 
 </android.support.constraint.ConstraintLayout>

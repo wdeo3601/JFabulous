@@ -1,13 +1,13 @@
 package com.wdeo3601.jfabulous.widget
 
-import android.animation.ObjectAnimator
 import android.content.Context
-import android.graphics.Canvas
 import android.graphics.Color
 import android.graphics.Paint
 import android.util.AttributeSet
+import android.util.TypedValue
 import android.view.View
-import android.widget.Toast
+import android.widget.LinearLayout
+import android.widget.TextView
 import com.wdeo3601.jfabulous.R
 
 /**
@@ -15,7 +15,10 @@ import com.wdeo3601.jfabulous.R
  * Email:       wdeo3601@163.com
  * Description:
  */
-class JFabulousView : View, View.OnClickListener {
+class JFabulousView : LinearLayout, View.OnClickListener {
+
+    private val normalTextView = TextView(context)
+    private val jFabulousTextWitcher = JFabulousSwitcher(context)
 
     //点赞图标的颜色
     private var mFabulousIconColor = Color.RED
@@ -27,17 +30,17 @@ class JFabulousView : View, View.OnClickListener {
     private var mShowIconAnimation = true
     //是否显示点赞数量变化时的动画
     private var mShowTextAnimation = true
+
     //当前显示的点赞数量
     private var mCurrentFabulousCount = 0
-    private var mBeforeFabulousCount: CharArray? = null
+    private var mNormalText = ""
+    private var mWitcherText = ""
+
     //是否已经点过赞了
     private var mHasFabulous = false
 
     //画图标的画笔
     lateinit var mIconPaint: Paint
-    //画点赞数量的画笔
-    lateinit var mTextPaint: Paint
-
 
     constructor(context: Context?) : this(context, null)
     constructor(context: Context?, attrs: AttributeSet?) : this(context, attrs, 0)
@@ -52,6 +55,7 @@ class JFabulousView : View, View.OnClickListener {
     private fun initView() {
         //设置点击事件
         this.setOnClickListener(this)
+
     }
 
     /**
@@ -62,7 +66,7 @@ class JFabulousView : View, View.OnClickListener {
         val attr = context.theme.obtainStyledAttributes(attrs, R.styleable.JFabulousView, 0, 0)
         mFabulousIconColor = attr.getColor(R.styleable.JFabulousView_fabulousIconColor, Color.RED)
         mFabulousTextColor = attr.getColor(R.styleable.JFabulousView_fabulousTextColor, Color.BLACK)
-        mFabulousTextSize = attr.getDimension(R.styleable.JFabulousView_fabulousTextSize, 16F)
+        mFabulousTextSize = attr.getDimension(R.styleable.JFabulousView_fabulousTextSize, 18F)
         mShowIconAnimation = attr.getBoolean(R.styleable.JFabulousView_showIconAnimation, true)
         mShowTextAnimation = attr.getBoolean(R.styleable.JFabulousView_showTextAnimation, true)
         mCurrentFabulousCount = attr.getInt(R.styleable.JFabulousView_currentFabulousNumber, 0)
@@ -74,57 +78,60 @@ class JFabulousView : View, View.OnClickListener {
         mIconPaint.strokeWidth = 3F
         mIconPaint.color = mFabulousIconColor
 
-        //初始化文本画笔
-        mTextPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mTextPaint.color = mFabulousTextColor
-        mTextPaint.textSize = mFabulousTextSize
-    }
+        normalTextView.setTextColor(mFabulousTextColor)
+        normalTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mFabulousTextSize)
+        jFabulousTextWitcher.initData(mFabulousTextColor, mFabulousTextSize)
 
-    override fun onMeasure(widthMeasureSpec: Int, heightMeasureSpec: Int) {
-        super.onMeasure(widthMeasureSpec, heightMeasureSpec)
-    }
+        val divideIndex = divideTextIndex(mCurrentFabulousCount)
+        normalTextView.text = mCurrentFabulousCount.toString().substring(0, divideIndex)
 
-    override fun onDraw(canvas: Canvas?) {
-        super.onDraw(canvas)
-        //画数字
-        drawFabulousCount(0F, canvas)
+        addView(normalTextView)
+        addView(jFabulousTextWitcher)
     }
 
     /**
-     * 画点赞数量
+     * 划分文本为需要变换的和不需要变换的
      */
-    private fun drawFabulousCount(startX: Float, canvas: Canvas?) {
-        //拿到上次绘制的字符串长度
-        val beforeLength = mBeforeFabulousCount?.size
-
-        //把将要绘制的数字转化成字符串，并计算长度
-        val countString = mCurrentFabulousCount.toString().toCharArray()
-        val length = countString.size
-
-        //计算开始绘制文字的起始位置
-        var textX = startX
-        val textY = mTextPaint.fontSpacing
-
-        //找出变动的字符
-        var startPosition = 0
-        if (beforeLength != null && beforeLength == length) {
-            for (i in 0 until length) {
-                if (mBeforeFabulousCount!![i] != countString[i]) {
-                    startPosition = i
-                    break
-                }
-//                } else {
-//                    textX += mTextPaint.measureText(countString[i].toString())
-//                }
-            }
+    private fun divideTextIndex(number: Int): Int {
+        //计算将要变成的下一个数
+        val nextNumber: Int = if (mHasFabulous) {
+            number - 1
         } else {
-            startPosition = 0
+            number + 1
         }
 
-        for (i in 0 until length) {
-            val drawingChar = countString[i].toString()
-            textX += mTextPaint.measureText(drawingChar)
-            canvas?.drawText(drawingChar, textX, textY, mTextPaint)
+        //转换成字符串进行比较
+        val currentNumberStr = number.toString()
+        val nextNumberStr = nextNumber.toString()
+
+        val unSelectedText: String
+        val selectedText: String
+        if (currentNumberStr.length != nextNumberStr.length) {
+            if (mHasFabulous) {
+                selectedText = currentNumberStr
+                unSelectedText = nextNumberStr
+            } else {
+                selectedText = nextNumberStr
+                unSelectedText = currentNumberStr
+            }
+            jFabulousTextWitcher.setSelectAndText(mHasFabulous, selectedText, unSelectedText)
+            return 0
+        } else {
+            for (i in 0 until currentNumberStr.length) {
+                if (currentNumberStr[i] != nextNumberStr[i]) {
+
+                    if (mHasFabulous) {
+                        selectedText = currentNumberStr.substring(i)
+                        unSelectedText = nextNumberStr.substring(i)
+                    } else {
+                        selectedText = nextNumberStr.substring(i)
+                        unSelectedText = currentNumberStr.substring(i)
+                    }
+                    jFabulousTextWitcher.setSelectAndText(mHasFabulous, selectedText, unSelectedText)
+                    return i
+                }
+            }
+            return 0
         }
     }
 
@@ -133,26 +140,6 @@ class JFabulousView : View, View.OnClickListener {
     }
 
     override fun onClick(v: View?) {
-        mBeforeFabulousCount = mCurrentFabulousCount.toString().toCharArray()
-        var fabulousState = ""
-        if (mHasFabulous) {
-            fabulousState = "取消点赞，-1"
-            reduceOneNumber()
-        } else {
-            fabulousState = "成功点赞，+1"
-            addOneNumber()
-        }
-        mHasFabulous = !mHasFabulous
-        Toast.makeText(context, fabulousState, Toast.LENGTH_LONG).show()
-    }
-
-    private fun reduceOneNumber() {
-        mCurrentFabulousCount--
-        invalidate()
-    }
-
-    private fun addOneNumber() {
-        mCurrentFabulousCount++
-        invalidate()
+        jFabulousTextWitcher.setSelect()
     }
 }
