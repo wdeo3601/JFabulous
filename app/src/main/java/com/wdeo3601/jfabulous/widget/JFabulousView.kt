@@ -20,8 +20,6 @@ class JFabulousView : LinearLayout, View.OnClickListener {
     private val normalTextView = TextView(context)
     private val jFabulousTextWitcher = JFabulousSwitcher(context)
 
-    //点赞图标的颜色
-    private var mFabulousIconColor = Color.RED
     //点赞数量文字的颜色
     private var mFabulousTextColor = Color.BLACK
     //点赞数量文字的大小
@@ -33,8 +31,6 @@ class JFabulousView : LinearLayout, View.OnClickListener {
 
     //当前显示的点赞数量
     private var mCurrentFabulousCount = 0
-    private var mNormalText = ""
-    private var mWitcherText = ""
 
     //是否已经点过赞了
     private var mHasFabulous = false
@@ -64,7 +60,6 @@ class JFabulousView : LinearLayout, View.OnClickListener {
     private fun initData(attrs: AttributeSet?) {
         //拿到自定义的属性
         val attr = context.theme.obtainStyledAttributes(attrs, R.styleable.JFabulousView, 0, 0)
-        mFabulousIconColor = attr.getColor(R.styleable.JFabulousView_fabulousIconColor, Color.RED)
         mFabulousTextColor = attr.getColor(R.styleable.JFabulousView_fabulousTextColor, Color.BLACK)
         mFabulousTextSize = attr.getDimension(R.styleable.JFabulousView_fabulousTextSize, 18F)
         mShowIconAnimation = attr.getBoolean(R.styleable.JFabulousView_showIconAnimation, true)
@@ -72,11 +67,8 @@ class JFabulousView : LinearLayout, View.OnClickListener {
         mCurrentFabulousCount = attr.getInt(R.styleable.JFabulousView_currentFabulousNumber, 0)
         mHasFabulous = attr.getBoolean(R.styleable.JFabulousView_hasFabulous, false)
 
-        //初始化图标画笔
-        mIconPaint = Paint(Paint.ANTI_ALIAS_FLAG)
-        mIconPaint.style = Paint.Style.STROKE
-        mIconPaint.strokeWidth = 3F
-        mIconPaint.color = mFabulousIconColor
+        //点赞图标
+
 
         normalTextView.setTextColor(mFabulousTextColor)
         normalTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX,mFabulousTextSize)

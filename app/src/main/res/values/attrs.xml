@@ -2,8 +2,6 @@
 <resources>
 
     <declare-styleable name="JFabulousView">
-        <!--点赞图标的颜色-->
-        <attr name="fabulousIconColor" format="color" />
         <!--点赞数量的文字颜色-->
         <attr name="fabulousTextColor" format="color" />
         <!--点赞数量的文字大小-->
