@@ -50,9 +50,19 @@ class JFabulousSwitcher : TextView, Animator.AnimatorListener {
         textSize = paint.textSize
         text = "9999"
 
+        initPathPosition()
+        invalidate()
+    }
+
+    private fun initPathPosition() {
         post {
-            mSelectedPath = Path()
-            mUnselectedPath = Path()
+
+                mSelectedPath = Path()
+
+
+
+                mUnselectedPath = Path()
+
 
             if (hasSelected) {
                 mSelectedPath.moveTo(0.0f, height - paint.fontMetrics.bottom)
@@ -68,7 +78,6 @@ class JFabulousSwitcher : TextView, Animator.AnimatorListener {
                 mSelectedPath.lineTo(width.toFloat(), (2 * height) - paint.fontMetrics.bottom)
             }
         }
-        invalidate()
     }
 
     fun initData(mFabulousTextColor: Int, mFabulousTextSize: Float) {
@@ -82,6 +91,7 @@ class JFabulousSwitcher : TextView, Animator.AnimatorListener {
         hasSelected = mHasFabulous
         mSelectedText = selectedText
         mUnselectedText = unSelectedText
+        initPathPosition()
         invalidate()
     }
 

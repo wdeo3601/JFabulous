@@ -6,6 +6,7 @@ import android.graphics.Paint
 import android.util.AttributeSet
 import android.util.TypedValue
 import android.view.View
+import android.view.ViewGroup
 import android.widget.LinearLayout
 import android.widget.TextView
 import com.wdeo3601.jfabulous.R
@@ -19,6 +20,7 @@ class JFabulousView : LinearLayout, View.OnClickListener {
 
     private val normalTextView = TextView(context)
     private val jFabulousTextWitcher = JFabulousSwitcher(context)
+    private val jFabulousIcon = JFabulousIcon(context)
 
     //点赞数量文字的颜色
     private var mFabulousTextColor = Color.BLACK
@@ -68,7 +70,8 @@ class JFabulousView : LinearLayout, View.OnClickListener {
         mHasFabulous = attr.getBoolean(R.styleable.JFabulousView_hasFabulous, false)
 
         //点赞图标
-
+        val params = LinearLayout.LayoutParams(TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50f,context.resources.displayMetrics).toInt(), TypedValue.applyDimension(TypedValue.COMPLEX_UNIT_DIP,50f,context.resources.displayMetrics).toInt())
+        jFabulousIcon.layoutParams = params
 
         normalTextView.setTextColor(mFabulousTextColor)
         normalTextView.setTextSize(TypedValue.COMPLEX_UNIT_PX, mFabulousTextSize)
@@ -76,7 +79,7 @@ class JFabulousView : LinearLayout, View.OnClickListener {
 
         divideTextIndex(mCurrentFabulousCount)
 
-
+        addView(jFabulousIcon)
         addView(normalTextView)
         addView(jFabulousTextWitcher)
     }
